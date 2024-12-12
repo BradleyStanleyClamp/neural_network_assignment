@@ -1,15 +1,23 @@
-import nueral_network as nn
+import neural_network as nn
 import torch
 
-# test1 = nn.Linear_model()
 
-# test1.test_lin_model()
+x = torch.ones((784, 1))
+y = torch.tensor([[1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]).T
+
+model = nn.Linear_model()
+
+y_hat = model.forward(x)
 
 
-x = torch.rand(4, 1)
-x[3] = -5
-print(x)
+print(y_hat.shape)
+print(y.shape)
+# assert y_hat.shape == y.shape
 
-r = nn.ReLU()
+y_hat = torch.tensor([1.0]).T
+y = torch.tensor([2.0]).T
 
-print(r.backward(x))
+
+loss = nn.cross_entropy_loss(y_hat, y)
+
+# model.backwards(loss)

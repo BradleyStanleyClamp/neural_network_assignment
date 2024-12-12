@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+name = "neural_network"
+version = "0.1"
+description = "A neural network package built from *scratch* as part of an assignment"
+authors = [
+    {name = "Bradley", email = "bradley.stanley-clamp@new.ox.ac.uk"}
+]
+readme = "README.md"
+dependencies = ["torch"]
+
+[project.urls]
+
+[project.scripts] # Define scripts here if you have any
+
+[project.optional-dependencies] # Define optional dependencies here if you have any
