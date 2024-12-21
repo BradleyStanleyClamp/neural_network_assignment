@@ -56,14 +56,3 @@ class Softmax:
 
         return y
 
-    def backward(self, x, loss_grad):
-        """
-        Argument:
-        x -- input to Softmax function, which is the output of the linear part of the layer. Has a size (n_x, 1), where n_x is the number of features in the linear part of the layer
-        loss_grad -- backpropagated loss gradient value with size (n_x, 1)
-
-        Returns:
-        dZ -- gradient of cost wrt to Z.
-        """
-
-        # TODO: Implement ... ?

@@ -20,8 +20,11 @@ def initialize_parameters(input_size, output_size, mode="random"):
 
     if mode == "random":
         weights = torch.rand(output_size, input_size)
-        biases = torch.zeros(output_size, 1)
+        biases = torch.rand(output_size, 1)
 
+    elif mode == "ones":
+        weights = torch.ones(output_size, input_size)
+        biases = torch.ones(output_size, 1)
     else:
         raise NotImplementedError("Other modes not yet implimented")
 
@@ -30,22 +33,18 @@ def initialize_parameters(input_size, output_size, mode="random"):
 
 def cross_entropy_loss(y_hat, y):
     """
+    CE = - SUM(t_i log(s_i))
+
     Arguments:
-    y_hat -- Output of the model
-    y -- True labels
+    y_hat -- Output of the model with size (n, 1), where n is the number of neurons in the output layer
+    y -- True labels with size (n, 1),  where n is the number of neurons in the output layer
 
     Returns:
-    loss -- cross entropy loss
+    loss -- cross entropy loss, scalar
     """
 
-    m = y.shape[1]
+    loss = - torch.sum(y * torch.log(y_hat))
 
-    loss = (-1 / m) * (
-        torch.dot(y, torch.log(y_hat).T) + torch.dot((1 - y), torch.log(1 - y_hat).T)
-    )
-
-    loss = torch.squeeze(loss)
-    print(loss.shape)
     assert loss.shape == ()
 
     return loss

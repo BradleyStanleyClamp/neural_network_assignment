@@ -4,7 +4,7 @@ from .functions import initialize_parameters
 
 class Linear_layer:
 
-    def __init__(self, input_size, output_size) -> None:
+    def __init__(self, input_size, output_size, init_mode="random") -> None:
         """
         Arguments:
         input_size -- size of input layer
@@ -14,7 +14,7 @@ class Linear_layer:
         self.W -- Weight matrix of size (output_size, input_size)
         self.b -- Bias matrix of size (output_size, 1)
         """
-        self.W, self.b = initialize_parameters(input_size, output_size, mode="random")
+        self.W, self.b = initialize_parameters(input_size, output_size, mode=init_mode)
 
     def forward(self, x):
         """
