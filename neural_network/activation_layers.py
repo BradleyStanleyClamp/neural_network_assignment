@@ -6,32 +6,32 @@ class ReLU:
     def __init__(self) -> None:
         pass
 
-    def forward(self, x):
+    def forward(self, Z):
         """
         Argument:
-        x -- input to ReLU function, which is the output of the linear part of the layer. Has a size (n_x, 1), where n_x is the number of features in the linear part of the layer
+        Z -- input to ReLU function, which is the output of the linear part of the layer. Has a size (n_x, 1), where n_x is the number of features in the linear part of the layer
 
         Returns:
-        y -- output of ReLU function applied to each feature individually. Has size (n_x, 1).
+        A -- output of ReLU function applied to each feature individually. Has size (n_x, 1).
         """
-        y = torch.maximum(x, torch.tensor(0.0))
+        A = torch.maximum(Z, torch.tensor(0.0))
 
-        return y
+        return Z
 
-    def backward(self, x):
+    def backward(self, dA):
         """
         Argument:
-        x -- Incoming gradient of next layer. Has a size (n_x, 1), where n_x is the number of gradients in the next layer.
+        dA -- Incoming gradient of next layer. Has a size (n_x, 1), where n_x is the number of gradients in the next layer.
 
         Returns:
-        y -- output of ReLU derivative. Has size (n_x, 1).
+        dZ -- output of ReLU derivative. Has size (n_x, 1).
         """
 
-        y = x.clone()
+        dZ = dA.clone()
 
-        y[x <= 0] = 0
+        dZ[dA <= 0] = 0
 
-        return y
+        return dZ
 
 
 class Softmax:
@@ -39,20 +39,19 @@ class Softmax:
     def __init__(self) -> None:
         pass
 
-    def forward(self, x):
+    def forward(self, Z):
         """
         Argument:
-        x -- input to Softmax function, which is the output of the linear part of the layer. Has a size (n_x, 1), where n_x is the number of features in the linear part of the layer
+        Z -- input to Softmax function, which is the output of the linear part of the layer. Has a size (n_x, 1), where n_x is the number of features in the linear part of the layer
 
         Returns:
-        y -- output of Softmax function applied to each feature individually. Has size (n_x, 1).
+        A -- output of Softmax function applied to each feature individually. Has size (n_x, 1).
         """
 
-        y = torch.divide(
-            torch.exp(x - torch.max(x)), torch.sum(torch.exp(x - torch.max(x)))
+        A = torch.divide(
+            torch.exp(Z - torch.max(Z)), torch.sum(torch.exp(Z - torch.max(Z)))
         )
 
-        assert y.shape == x.shape
+        assert A.shape == Z.shape
 
-        return y
-
+        return A
