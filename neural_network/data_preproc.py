@@ -8,7 +8,7 @@ def load_mnist():
         train=True,
         download=True,
         transform=transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+            [transforms.ToTensor()]  # , transforms.Normalize((0.1307,), (0.3081,))]
         ),
     )
 
@@ -17,7 +17,7 @@ def load_mnist():
         train=False,
         download=True,
         transform=transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+            [transforms.ToTensor()]  # , transforms.Normalize((0.1307,), (0.3081,))]
         ),
     )
 

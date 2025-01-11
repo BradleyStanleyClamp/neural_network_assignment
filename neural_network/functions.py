@@ -1,7 +1,7 @@
 import torch
 
 
-def initialize_parameters(input_size, output_size, mode="HeInit"):
+def initialize_parameters(input_size, output_size, mode):
     """
     Argument:
     input_size -- number of connections to previous layer
@@ -20,9 +20,9 @@ def initialize_parameters(input_size, output_size, mode="HeInit"):
 
     if mode == "random":
         weights = torch.rand(output_size, input_size)
-        biases = torch.rand(output_size, 1)
+        biases = torch.zeros(output_size, 1)
 
-    if mode == "HeInit":
+    elif mode == "HeInit":
         shape = (input_size, output_size)
         fan_in = output_size
         std = torch.sqrt(torch.tensor(2.0 / fan_in))
@@ -33,7 +33,7 @@ def initialize_parameters(input_size, output_size, mode="HeInit"):
         weights = torch.ones(output_size, input_size)
         biases = torch.ones(output_size, 1)
     else:
-        raise NotImplementedError("Other modes not yet implimented")
+        raise NotImplementedError(f"{mode} mode not yet implemented")
 
     return weights, biases
 
@@ -50,8 +50,22 @@ def cross_entropy_loss(y_hat, y):
     loss -- cross entropy loss, scalar
     """
     clamped_value = torch.clamp(y_hat, min=1e-19, max=1 - 1e-19)
-    # print(f"clamped value: {clamped_value}")
-    loss = -torch.sum(y * torch.log(clamped_value))
+
+    # loss = -torch.sum(y * torch.log(clamped_value))
+    # m = clamped_value.shape[1]
+    # print(f"shape: {m}")
+    # print(clamped_value.shape)
+    # print(y.shape)
+
+    # loss = (-1 / m) * (
+    #     torch.dot(y, torch.log(clamped_value).T)
+    #     + torch.dot((1 - y), torch.log(1 - clamped_value).T)
+    # )
+
+    loss = -1 * torch.mean(
+        (y * torch.log(clamped_value))
+    )  # + ((1 - y) * torch.log(clamped_value))
+    # )
 
     assert loss.shape == ()
 
@@ -88,3 +102,28 @@ def one_hot(target):
     target_one_hot[target] = 1
 
     return target_one_hot
+
+
+def negative_log_likelihood(predictions, targets):
+    """
+    Computes the Negative Log-Likelihood (NLL) loss.
+
+    Args:
+        predictions (torch.Tensor): Predicted probabilities for each class (shape: [N, C]),
+                                    where N is the number of samples and C is the number of classes.
+        targets (torch.Tensor): Ground truth class indices (shape: [N]).
+
+    Returns:
+        float: The NLL loss.
+    """
+    # Ensure numerical stability by adding a small value (epsilon) to predictions
+    epsilon = 1e-9
+    # print(predictions)
+
+    # Gather the predicted probabilities for the true classes
+    true_class_probs = predictions[torch.arange(len(targets)), targets]
+
+    # Compute the negative log of the true class probabilities
+    nll = -torch.sum(torch.log(true_class_probs)) / len(targets)
+
+    return nll.item()

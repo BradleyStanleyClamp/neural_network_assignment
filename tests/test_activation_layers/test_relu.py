@@ -8,10 +8,12 @@ relu = nn.ReLU()
 
 def test_relu_forward_basic():
     """Test ReLU forward pass with basic input."""
-    input_tensor = torch.tensor([[-1.0, 2.0], [3.0, -4.0]])
-    expected_output = torch.tensor([[0.0, 2.0], [3.0, 0.0]])
+    input_tensor = torch.tensor([[-1.0, 2.0, 3.0, -4.0]]).T
+    expected_output = torch.tensor([[0.0, 2.0, 3.0, 0.0]]).T
     output = relu.forward(input_tensor)
-    assert torch.equal(output, expected_output), f"Output mismatch: {output}"
+    assert torch.equal(
+        output, expected_output
+    ), f"Output mismatch: {output}, {expected_output}"
 
 
 def test_relu_forward_zero():
@@ -66,7 +68,6 @@ def test_relu_backward_all_positive():
     assert torch.equal(
         backward_output, expected_gradient
     ), f"Output mismatch: {backward_output}"
-
 
 
 def test_relu_empty_tensor():

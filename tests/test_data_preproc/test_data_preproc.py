@@ -13,7 +13,31 @@ def test_mnist_data():
     for i in [0, 5]:
         im, label = train_dataset[i]
 
-        plt.imshow(im.numpy()[0])
-        plt.title(label)
-        plt.show()
+        # print(im.numpy()[0])
+        # plt.imshow(im.numpy()[0])
+        # plt.title(label)
+        # plt.show()
 
+
+# test_mnist_data()
+
+
+def test_train_loader():
+    train_dataset, test_dataset = nn.load_mnist()
+
+    train_loader, test_loader = nn.get_mnist_loaders(train_dataset[0], test_dataset, 1)
+
+    # im, label = train_dataset[0]
+    # print(im.numpy()[0])
+    # plt.imshow(im.numpy()[0])
+    # plt.title(label)
+    # plt.show()
+
+    # print(train_dataset.data[0, :, :])
+    # print(train_dataset.targets[0])
+
+    for batch_idx, (val) in enumerate(train_loader):
+        print(val)
+        print(im.numpy()[0])
+
+test_train_loader()

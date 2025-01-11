@@ -87,3 +87,5 @@ def test_linear_forward(size_in, size_out, data_in, expected_out):
 
 #     output = linlay.backward(grad_in)
 #     assert torch.equal(output, expected_out)
+
+# def test_linear_forward

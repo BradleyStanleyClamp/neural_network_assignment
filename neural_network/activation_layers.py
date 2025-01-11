@@ -14,9 +14,13 @@ class ReLU:
         Returns:
         A -- output of ReLU function applied to each feature individually. Has size (n_x, 1).
         """
-        A = torch.maximum(Z, torch.tensor(0.0))
 
-        return Z
+        A = torch.maximum(Z, torch.tensor(0.0))
+        self.Z = Z
+
+        assert A.shape == Z.shape
+
+        return A
 
     def backward(self, dA):
         """
@@ -29,7 +33,10 @@ class ReLU:
 
         dZ = dA.clone()
 
-        dZ[dA <= 0] = 0
+        dZ[self.Z <= 0] = 0
+        # dZ[dA <= 0] = 0
+
+        assert dZ.shape == self.Z.shape
 
         return dZ
 
@@ -55,3 +62,10 @@ class Softmax:
         assert A.shape == Z.shape
 
         return A
+
+class Log_Softmax:
+    def __init__(self):
+        pass
+
+    def forward(self, Z):
+        return Z -  torch.log(torch.sum(torch.exp(Z))).unsqueeze(-1)
