@@ -13,7 +13,6 @@ def initialize_parameters(input_size, output_size, mode):
                     weights -- weight matrix of shape (output_size, input_size)
                     biases -- bias vector of shape (output_size, 1)
 
-    TODO: Initilisation techniqes
     """
 
     torch.manual_seed(42)
@@ -51,21 +50,7 @@ def cross_entropy_loss(y_hat, y):
     """
     clamped_value = torch.clamp(y_hat, min=1e-19, max=1 - 1e-19)
 
-    # loss = -torch.sum(y * torch.log(clamped_value))
-    # m = clamped_value.shape[1]
-    # print(f"shape: {m}")
-    # print(clamped_value.shape)
-    # print(y.shape)
-
-    # loss = (-1 / m) * (
-    #     torch.dot(y, torch.log(clamped_value).T)
-    #     + torch.dot((1 - y), torch.log(1 - clamped_value).T)
-    # )
-
-    loss = -1 * torch.mean(
-        (y * torch.log(clamped_value))
-    )  # + ((1 - y) * torch.log(clamped_value))
-    # )
+    loss = -1 * torch.mean((y * torch.log(clamped_value)))
 
     assert loss.shape == ()
 
@@ -124,7 +109,6 @@ def negative_log_likelihood(predictions, targets):
     """
     # Ensure numerical stability by adding a small value (epsilon) to predictions
     epsilon = 1e-9
-    # print(predictions)
 
     # Gather the predicted probabilities for the true classes
     true_class_probs = predictions[torch.arange(len(targets)), targets]

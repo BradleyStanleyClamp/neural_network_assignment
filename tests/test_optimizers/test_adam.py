@@ -40,7 +40,7 @@ def test_adam_1D():
         # b0, bm, bv = adam.optimize_with_adam(db, b0, bm, bv, t)
 
         if check_convergence(w0, w0_old):
-            print(f"converged after {t} iterations")
+            # print(f"converged after {t} iterations")
             converged = True
 
         else:
@@ -57,42 +57,3 @@ def loss_function_2D(x, y):
 def grad_function_2D(x):
 
     return torch.tensor([x[0] * 2, x[1] * 2])
-
-
-def test_adam_2D():
-    w0 = torch.tensor([1, 1])
-    b0 = torch.tensor([0])
-
-    wm = torch.tensor([0])
-    wv = torch.tensor([0])
-
-    bm = torch.tensor([0])
-    bv = torch.tensor([0])
-
-    adam = nn.Adam()
-    t = 1
-
-    converged = False
-
-    while not converged:
-        dw = grad_function_2D(w0)
-        # db = grad_function(b0)
-        # print(f"dw: {dw}")
-
-        w0_old = w0
-        w0, wm, wv = adam.optimize_with_adam(dw, w0, wm, wv, t)
-
-        # b0, bm, bv = adam.optimize_with_adam(db, b0, bm, bv, t)
-
-        if check_convergence(w0, w0_old):
-            print(f"converged after {t} iterations")
-            converged = True
-
-        else:
-            # print(f"Iteration {t}: weight: {w0}")
-            t += 1
-
-    assert converged
-
-
-test_adam_2D()

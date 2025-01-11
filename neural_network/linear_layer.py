@@ -53,19 +53,11 @@ class Linear_layer:
         db -- Gradient of the cost wrt biases current layer l, same shape as self.b
 
         """
-        # m = dZ.shape[0]
-
-        # self.dW = (1 / m) * torch.matmul(dZ, self.A_prev.T)
-        # self.db = torch.ones(dZ.shape) * torch.mean(dZ)
-        # dA_prev = torch.matmul(self.W.T, dZ)
 
         m = self.A_prev.shape[1]
         self.dW = (1 / m) * torch.matmul(dZ, self.A_prev.T)
         self.db = (1 / m) * torch.sum(dZ, axis=1, keepdims=True)
         dA_prev = torch.matmul(self.W.T, dZ)
-
-        # print(f"dW: {self.dW}")
-        # print(f"db: {self.db}")
 
         assert dA_prev.shape == self.A_prev.shape
         assert self.dW.shape == self.W.shape

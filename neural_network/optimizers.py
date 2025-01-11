@@ -21,13 +21,7 @@ class Adam:
         """
         assert m_prev.shape == gt.shape
 
-        # print(
-        #     f"Target: 1: {self.beta1 * m_prev}, 2: {(1 - self.beta1) * gt}, 3: {(self.beta1 * m_prev)+ (1 - self.beta1) * gt}"
-        # )
-
         m = self.beta1 * m_prev + (1 - self.beta1) * gt
-
-        # self.beta1 * self.m_dw + (1 - self.beta1) * dw
 
         assert m.shape == m_prev.shape
         return m
@@ -45,7 +39,6 @@ class Adam:
         """
 
         m_unb = m / (1 - self.beta1**t)
-        # print(f"denom: {(1 - self.beta1**t)}")
 
         assert m_unb.shape == m.shape
 
@@ -122,7 +115,6 @@ class Adam:
         m -- biased first momentum estimate
         v -- biased second momentum estimate
         """
-        # print(f"t: {t}, w: {param}, dw: {gt}")
 
         m = self.update_first_momentum_estimate(m_prev, gt)
         v = self.update_second_momentum_estimate(v_prev, gt)
@@ -132,7 +124,5 @@ class Adam:
         # print(f"m_unb: {m_unb}")
 
         param_new = self.update_parameters(param, m_unb, v_unb)
-
-        # print(f"t: {t}, m: {m}, v: {v}, m_unb: {m_unb}, v_unb: {v_unb} w: {param_new}")
 
         return param_new, m, v

@@ -34,7 +34,6 @@ class ReLU:
         dZ = dA.clone()
 
         dZ[self.Z <= 0] = 0
-        # dZ[dA <= 0] = 0
 
         assert dZ.shape == self.Z.shape
 
@@ -55,10 +54,6 @@ class Softmax:
         A -- output of Softmax function applied to each feature individually. Has size (n_x, 1).
         """
 
-        # A = torch.divide(
-        #     torch.exp(Z - torch.max(Z)), torch.sum(torch.exp(Z - torch.max(Z)))
-        # )
-
         # Subtract max along the last dimension (dim=1) for numerical stability
         Z_max = torch.max(Z, dim=1, keepdim=True).values
 
@@ -75,4 +70,11 @@ class Log_Softmax:
         pass
 
     def forward(self, Z):
+        """
+        Argument:
+        Z -- input to Log Softmax function, which is the output of the linear part of the layer. Has a size (n_x, batch_size), where n_x is the number of features in the linear part of the layer
+
+        Returns:
+        A -- output of Log Softmax function applied to each feature individually. Has size (n_x, batch_size).
+        """
         return Z - torch.log(torch.sum(torch.exp(Z))).unsqueeze(-1)

@@ -49,9 +49,6 @@ def test_linear_backwards():
     #  [-0.11313155]
     #  [-0.13209101]]
 
-    print(f"dA_prev: {dA_prev}")
-    print(f"dW: {dW}")
-    print(f"db: {db}")
-
-
-test_linear_backwards()
+    # print(f"dA_prev: {dA_prev}")
+    # print(f"dW: {dW}")
+    # print(f"db: {db}")
