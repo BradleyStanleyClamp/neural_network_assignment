@@ -26,7 +26,8 @@ class Categorical_cross_entropy:
         softmax = nn.Softmax()
 
         # Calculate f(s), softmax of the output of model and store them
-        self.softmax_probs = softmax.forward(s)
+        self.softmax_probs = softmax.forward(s.T)
+        # print(f"self.softmax_probs: {self.softmax_probs}")
 
         # Check s and t are same shapes
         # assert (
@@ -47,6 +48,7 @@ class Categorical_cross_entropy:
 
         # Set output equal to probabilities
         delta = self.softmax_probs.clone()
+        # print(f"delta: {delta}")
 
         # assert self.t.shape == delta.shape
 
@@ -55,7 +57,13 @@ class Categorical_cross_entropy:
         #     if ti == 1:
         #         delta[i] -= 1
 
-        delta[:, self.t] -= 1
+        # print(f"shape of delta is: {delta.shape}")
+        # print(f"t: {self.t}")
+        for i in range(len(self.t)):
+            # print(self.t[i])
+            # print(delta[i, :])
+            delta[i, self.t[i]] -= 1
+            # print(delta[i, :])
 
         return delta.T
 

@@ -55,17 +55,24 @@ class Softmax:
         A -- output of Softmax function applied to each feature individually. Has size (n_x, 1).
         """
 
-        A = torch.divide(
-            torch.exp(Z - torch.max(Z)), torch.sum(torch.exp(Z - torch.max(Z)))
-        )
+        # A = torch.divide(
+        #     torch.exp(Z - torch.max(Z)), torch.sum(torch.exp(Z - torch.max(Z)))
+        # )
+
+        # Subtract max along the last dimension (dim=1) for numerical stability
+        Z_max = torch.max(Z, dim=1, keepdim=True).values
+
+        # Compute softmax
+        A = torch.exp(Z - Z_max) / torch.sum(torch.exp(Z - Z_max), dim=1, keepdim=True)
 
         assert A.shape == Z.shape
 
         return A
+
 
 class Log_Softmax:
     def __init__(self):
         pass
 
     def forward(self, Z):
-        return Z -  torch.log(torch.sum(torch.exp(Z))).unsqueeze(-1)
+        return Z - torch.log(torch.sum(torch.exp(Z))).unsqueeze(-1)

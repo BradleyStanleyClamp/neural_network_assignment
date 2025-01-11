@@ -9,17 +9,17 @@ from neural_network import (
 
 # Input
 torch.manual_seed(42)
-input1 = torch.randn(1, 5, requires_grad=True)
+input1 = torch.randn(5, 3, requires_grad=True)
 print(f"input1: {input1}")
 
 # Targets
-target1 = torch.tensor([2])
-target2 = torch.tensor([[0, 0, 1, 0, 0]])
+target1 = torch.tensor([2, 1, 4])
+# target2 = torch.tensor([[0, 0, 1, 0, 0]])
 print(f"target1: {target1}")
 
 # My broken code
 my_softmax = Softmax()
-my_loss = negative_log_likelihood(my_softmax.forward(input1), target1)
+my_loss = negative_log_likelihood(my_softmax.forward(input1.T), target1)
 print(f"my loss: {my_loss}")
 
 # My cre
@@ -30,7 +30,7 @@ print(f"my_ds: {my_dS}")
 
 # Torch cross entropy
 loss1 = torch.nn.CrossEntropyLoss()
-torch_cre_loss = loss1(input1, target1)
+torch_cre_loss = loss1(input1.T, target1)
 
 print(f"torch_cre_loss: {torch_cre_loss}")
 
@@ -43,7 +43,7 @@ log_softmax = torch.nn.LogSoftmax(dim=1)
 
 loss_fn = torch.nn.NLLLoss()
 
-torch_comb_loss = loss_fn(log_softmax(input1), target1)
+torch_comb_loss = loss_fn(log_softmax(input1.T), target1)
 print(f"torch_comb_loss: {torch_comb_loss}")
 
 # loss.backward()

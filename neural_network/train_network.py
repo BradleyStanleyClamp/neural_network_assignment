@@ -65,11 +65,24 @@ class Train_network:
 
         """
         for batch_idx, (data, target) in enumerate(self.train_loader):
-            dS_mean, loss_mean, batch_accuracy = self.train_single_batch(data, target)
+            # dS_mean, loss_mean, batch_accuracy = self.train_single_batch(data, target)
 
             # print(dS_mean)
             # Back propagate through the network
-            self.model.backward(dS_mean)
+            S = self.model.forward(data)
+            loss = Categorical_cross_entropy(S, target)
+            # print(loss.loss)
+            # loss_mean = torch.mean(loss.loss)
+            # print(f"pred: {predicted}, target: {target_point}")
+            max_indices = torch.argmax(loss.softmax_probs, dim=1)
+            comparison = max_indices == target
+            correct_count = comparison.sum().item()
+            batch_accuracy = correct_count / len(data)
+
+            dS = loss.backwards()
+            assert dS.shape == S.shape
+            self.model.backward(dS)
+
             # print(loss_mean)
             # # if batch_idx == 1:
             # assert False
@@ -90,11 +103,11 @@ class Train_network:
                         batch_idx * len(data),
                         len(self.train_loader.dataset),
                         100.0 * batch_idx / len(self.train_loader),
-                        loss_mean,
+                        loss.loss,
                         batch_accuracy,
                     )
                 )
-                self.losses.append(loss_mean)
+                self.losses.append(loss.loss)
                 self.accuracies.append(batch_accuracy)
                 if live_plot_bool:
                     self.live_plot.update_plot(self.losses, self.accuracies)

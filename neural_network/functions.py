@@ -74,16 +74,22 @@ def cross_entropy_loss(y_hat, y):
 
 def flatten_mnist(data):
     """
-    Flattens mnist image from [1, 28, 28] to [784, 1]
+    Flattens mnist image from [n_batch, 1, 28, 28] to [784, n_batch]
 
     Arguments
-    data -- A torch tensor of size [1, 28, 28], representing a single mnist image
+    data -- A torch tensor of size [n_batch, 1, 28, 28], representing a single mnist image
 
     Returns
-    flat -- A torch tensor of size [784, 1]
+    flat -- A torch tensor of size [784, n_batch]
     """
 
-    return data.view(-1, 1)
+    n_batch = data.shape[0]
+
+    output = data.reshape(n_batch, -1)
+
+    assert output.shape == torch.Size([n_batch, 784])
+
+    return output.T
 
 
 def one_hot(target):
