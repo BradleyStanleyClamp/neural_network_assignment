@@ -2,22 +2,26 @@ import neural_network as nn
 import torch
 
 
-x = torch.ones((784, 1))
-y = torch.tensor([[1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]).T
+# Hyperparameters
+epochs = 10
+learning_rate = 3e-3
+optimizer = "adam"
+batch_size = 64
 
-model = nn.Linear_model()
+# Model
+linear_model = nn.Linear_model()
 
-y_hat = model.forward(x)
+# Using training class to setup and run training
+train_network = nn.Train_network(
+    "mnist", learning_rate, optimizer, batch_size, epochs, linear_model
+)
+
+# Training the model
+train_network.train_model(live_plot_bool=False)
+
+# TODO: save the model
 
 
-print(y_hat.shape)
-print(y.shape)
-# assert y_hat.shape == y.shape
-
-y_hat = torch.tensor([1.0]).T
-y = torch.tensor([2.0]).T
-
-
-loss = nn.cross_entropy_loss(y_hat, y)
-
-# model.backwards(loss)
+# Evaluate model
+test_loader = train_network.test_loader
+nn.evaluate_model(linear_model, test_loader)

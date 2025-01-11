@@ -13,3 +13,4 @@ from .data_preproc import load_mnist, get_mnist_loaders
 from .train_network import Train_network, Live_plot
 from .optimizers import Adam
 from .categorical_cross_entropy import Categorical_cross_entropy
+from .evaluate_model import evaluate_model
