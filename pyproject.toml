@@ -9,7 +9,7 @@ authors = [
     {name = "Bradley", email = "bradley.stanley-clamp@new.ox.ac.uk"}
 ]
 readme = "README.md"
-dependencies = ["torch", "matplotlib"]
+dependencies = ["torch"]
 
 [project.urls]
 

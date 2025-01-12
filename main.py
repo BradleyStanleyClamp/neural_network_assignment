@@ -3,7 +3,7 @@ import torch
 
 
 # Hyperparameters
-epochs = 10
+epochs = 16
 learning_rate = 3e-3
 optimizer = "adam"
 batch_size = 64
@@ -17,11 +17,13 @@ train_network = nn.Train_network(
 )
 
 # Training the model
-train_network.train_model(live_plot_bool=False)
+train_network.train_model(live_plot_bool=True)
 
 # TODO: save the model
 
 
 # Evaluate model
-test_loader = train_network.test_loader
-nn.evaluate_model(linear_model, test_loader)
+# test_loader = train_network.test_loader
+# test_dataset = train_network.test_dataset
+# # print(data.shape)
+# nn.evaluate_model(linear_model, test_dataset)

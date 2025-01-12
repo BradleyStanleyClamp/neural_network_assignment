@@ -2,38 +2,38 @@ import torch
 from neural_network import Softmax
 
 
-def evaluate_model(model, test_loader):
+def evaluate_model(model, test_dataset):
 
     accuracy_sum = 0
     precision_sum = 0
     recall_sum = 0
     f1_sum = 0
 
-    for batch_idx, (data, target) in enumerate(test_loader):
-        S = model.forward(data)
+    data, target = torch.utils.data.default_collate(test_dataset)
 
-        softmax = Softmax()
+    # for batch_idx, (data, target) in enumerate(test_loader):
+    S = model.forward(data)
 
-        softmax_probs = softmax.forward(S)
+    softmax = Softmax()
 
-        y_pred = torch.argmax(softmax_probs, dim=0)
+    softmax_probs = softmax.forward(S)
 
-        accuracy = calc_accuracy(y_pred, target)
-        accuracy_sum += accuracy
-        precision = macro_precision(y_pred, target)
-        precision_sum += precision
-        recall = macro_recall(y_pred, target)
-        recall_sum += recall
-        f1 = macro_f1(y_pred, target)
-        f1_sum += f1
+    y_pred = torch.argmax(softmax_probs, dim=0)
 
-    accuracy_mean = accuracy_sum / len(test_loader)
-    precision_mean = precision_sum / len(test_loader)
-    recall_mean = recall_sum / len(test_loader)
-    f1_mean = f1_sum / len(test_loader)
-    print(
-        f"accuracy: {accuracy_mean}, precision: {precision_mean}, recall: {recall_mean}, f1: {f1_mean}"
-    )
+    accuracy = calc_accuracy(y_pred, target)
+    # accuracy_sum += accuracy
+    precision = macro_precision(y_pred, target)
+    # precision_sum += precision
+    recall = macro_recall(y_pred, target)
+    # recall_sum += recall
+    f1 = macro_f1(y_pred, target)
+    # f1_sum += f1
+
+    # accuracy_mean = accuracy_sum / len(test_loader)
+    # precision_mean = precision_sum / len(test_loader)
+    # recall_mean = recall_sum / len(test_loader)
+    # f1_mean = f1_sum / len(test_loader)
+    print(f"accuracy: {accuracy}, precision: {precision}, recall: {recall}, f1: {f1}")
 
 
 def calc_accuracy(y_pred, y_true):

@@ -6,6 +6,7 @@ from .categorical_cross_entropy import (
 )
 from .data_preproc import load_mnist, get_mnist_loaders
 import matplotlib.pyplot as plt
+from .evaluate_model import evaluate_model
 
 
 class Train_network:
@@ -48,10 +49,11 @@ class Train_network:
         for epoch in range(1, self.epochs):
             if test_on_data:
                 self.train_on_single_data_point_test(epoch, live_plot_bool)
-
             else:
                 self.train_single_epoch(epoch, live_plot_bool)
 
+            print(f"Epochs trained on: {epoch}")
+            evaluate_model(self.model, self.test_dataset)
         if live_plot_bool:
             self.live_plot.keep_plot_showing()
 
@@ -117,6 +119,7 @@ class Live_plot:
         self.axs[1].set_title("Accuracy vs Iteration")
         (self.line,) = self.axs[0].plot([], [], "r-")
         (self.acc,) = self.axs[1].plot([], [], "b-")
+        self.fig.tight_layout()
 
     def update_plot(self, losses, accuracies):
         self.line.set_xdata(range(len(losses)))
